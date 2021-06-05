@@ -10,14 +10,21 @@ class UserController {
         this.formEl.addEventListener('submit', event => {
             event.preventDefault();
 
-            let values = this.getValues()
+            let btn = this.formEl.querySelector("[type=submit]")
+            btn.disabled = true
 
+            let values = this.getValues()
             this.getPhoto()
                 .then(content => {
                     values.photo = content;
                     this.addLine(values);
+
+                    this.formEl.reset()
+
+                    btn.disabled = false
+
                 },
-                    (err)=> {
+                    (err) => {
                         console.error('error: ', err)
                     })
         });
@@ -46,9 +53,9 @@ class UserController {
                 reject(e)
             }
 
-            if(file){
+            if (file) {
                 fileReader.readAsDataURL(file);
-            }else{
+            } else {
                 resolve('dist/img/boxed-bg.jpg');
             }
 
@@ -64,9 +71,9 @@ class UserController {
                 if (field.checked) {
                     user[field.name] = field.value;
                 }
-            } else if(field.name == 'admin'){
+            } else if (field.name == 'admin') {
                 user[field.name] = field.checked;
-            }else {
+            } else {
                 user[field.name] = field.value;
             }
         });
@@ -79,7 +86,8 @@ class UserController {
             user.email,
             user.password,
             user.photo,
-            user.admin
+            user.admin,
+            user.register
         );
     }
 
@@ -91,8 +99,8 @@ class UserController {
             <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
             <td>${dataUser.name}</td>
             <td>${dataUser.email}</td>
-            <td>${(dataUser.admin)? 'Sim' : 'Não' }</td>
-            <td>${dataUser.birth}</td>
+            <td>${(dataUser.admin) ? 'Sim' : 'Não'}</td>
+            <td>${Ultils.dateFormat(dataUser.register)}</td>
             <td>
                 <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
                 <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
