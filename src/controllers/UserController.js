@@ -14,6 +14,9 @@ class UserController {
             btn.disabled = true
 
             let values = this.getValues()
+            if (!values) return false;
+
+
             this.getPhoto()
                 .then(content => {
                     values.photo = content;
@@ -64,7 +67,7 @@ class UserController {
 
     getValues() {
         let user = {};
-        let isValid;
+        let isValid = true;
 
         [...this.formEl].forEach(function (field, index) {
 
@@ -84,9 +87,10 @@ class UserController {
             }
         });
 
-        if(!isValid){
+        if (!isValid) {
             return false
         }
+
         return new Users(
             user.name,
             user.gender,
@@ -103,6 +107,9 @@ class UserController {
     addLine(dataUser) {
 
         let tr = document.createElement('tr');
+
+        tr.dataset.user = JSON.stringify(dataUser);
+        console.log(dataUser)
         tr.innerHTML = `
         <tr>
             <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
@@ -118,5 +125,20 @@ class UserController {
         `;
 
         this.tableEl.appendChild(tr)
+        this.updateCount();
+    }
+
+    updateCount() {
+        let numberUser = 0;
+        let numberAdmin = 0;
+
+        [...this.tableEl.children].forEach(tr => {
+            numberUser++;
+            let user = JSON.parse(tr.dataset.user);
+            if (user._admin) numberAdmin++;
+        })
+        document.getElementById('number-users').innerHTML = numberUser;
+        document.getElementById('number-users-admin').innerHTML = numberAdmin;
+
     }
 }
