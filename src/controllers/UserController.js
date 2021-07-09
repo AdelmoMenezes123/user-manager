@@ -9,6 +9,7 @@ class UserController {
         this.selectAll();
     }
 
+    // evento salvar atulizacao
     onEdit() {
         document.querySelector('#box-user-update .btn-cancel').addEventListener('click', e => {
             this.showPanelCreate()
@@ -66,6 +67,7 @@ class UserController {
         });
     }
 
+    // eveento salvar formulario
     onSubmit() {
         //envento click salvar dados
         this.formEl.addEventListener('submit', event => {
