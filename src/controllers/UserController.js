@@ -196,19 +196,9 @@ class UserController {
         );
     }
 
-    //obter dados da sessio storage
-    getUserStoragi() {
-        let users = [];
-
-        if (localStorage.getItem("users")) {
-            users = JSON.parse(localStorage.getItem("users"));
-        }
-        return users;
-    }
-
     //dados da session storage
     selectAll() {
-        let users = this.getUserStoragi();
+        let users = Users.getUserStoragi();
         users.forEach(dataUser => {
             let user = new Users();
 
@@ -263,6 +253,12 @@ class UserController {
         // click no botao delete
         tr.querySelector('.btn-delete').addEventListener("click", (e) => {
             if (confirm("Deseja realmente excluir?")) {
+                
+                let user = new Users()
+
+                user.loadFromJson(JSON.parse(tr.dataset.user));
+                user.remove()
+                
                 //remove usuario da tabela
                 tr.remove();
 
