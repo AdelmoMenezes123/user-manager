@@ -49,6 +49,8 @@ class UserController {
 
                     user.loadFromJson(result);
 
+                    user.save();
+
                     this.getTr(user, tr)
 
                     this.updateCount();
@@ -88,7 +90,7 @@ class UserController {
                 .then(content => {
                     values.photo = content;
 
-                    this.insert(values)
+                    values.save();
                     this.addLine(values);
 
                     this.formEl.reset()
@@ -214,17 +216,6 @@ class UserController {
 
             this.addLine(user);
         });
-    }
-
-    //session storage
-    insert(data) {
-
-        let users = this.getUserStoragi();
-
-        users.push(data);
-
-        // sessionStorage.setItem("users", JSON.stringify(users));
-        localStorage.setItem("users", JSON.stringify(users));
     }
 
     //add as lnhas la na tabela
